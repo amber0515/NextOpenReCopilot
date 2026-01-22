@@ -33,27 +33,56 @@ class ReCopilotSettingsManager:
         self.settings = self.load_settings()
 
     def get_default_settings(self):
-        """Get default settings dictionary."""
+        """Get default settings dictionary from default_config.json."""
         # 支持第三方API配置:
         # - OpenAI: base_url留空, api_key填写sk-xxx, model_name如gpt-4o
         # - Claude (via OpenAI兼容): base_url=https://api.anthropic.com, model_name=claude-3-opus-20240229
         # - DeepSeek: base_url=https://api.deepseek.com, model_name=deepseek-chat
         # - 本地Ollama: base_url=http://localhost:11434, model_name=llama3
-        return {
-            'model_name': 'gpt-4o',  # 默认使用OpenAI GPT-4o
-            'base_url': '',  # 留空使用OpenAI官方API
-            'api_key': '',  # 需要用户填写
-            'prompt_template': 'general', # 默认使用通用提示模板
-            'max_output_tokens': 8000,
-            'max_trace_caller_depth': 1,
-            'max_trace_callee_depth': 1,
-            'max_context_func_num': 10,
-            'data_flow_analysis': True,
-            'measure_info_score': True,
-            'need_confirm': True,
-            'debug_mode': False,
-            'feedback': False # 原始字节码中有13个值，这里推测为 False
-        }
+        default_config_path = os.path.join(self.settings_dir, 'config.json')
+
+        if not os.path.exists(default_config_path):
+            print(f"[DEBUG🐛] default_config.json not found, using hardcoded defaults")
+            # 回退到硬编码默认值（容错）
+            return {
+                'model_name': 'gpt-4o',
+                'base_url': '',
+                'api_key': '',
+                'prompt_template': 'general',
+                'max_output_tokens': 8000,
+                'max_trace_caller_depth': 1,
+                'max_trace_callee_depth': 1,
+                'max_context_func_num': 10,
+                'data_flow_analysis': True,
+                'measure_info_score': True,
+                'need_confirm': True,
+                'debug_mode': False,
+                'feedback': False
+            }
+
+        try:
+            with open(default_config_path, 'r', encoding='utf-8') as f:
+                settings = json.load(f)
+            print(f"[👏] load default config from {default_config_path}")
+            return settings
+        except Exception as e:
+            print(f"[!💥] Error loading default_config.json: {e}, using hardcoded defaults")
+            # 回退到硬编码默认值
+            return {
+                'model_name': 'gpt-4o',
+                'base_url': '',
+                'api_key': '',
+                'prompt_template': 'general',
+                'max_output_tokens': 8000,
+                'max_trace_caller_depth': 1,
+                'max_trace_callee_depth': 1,
+                'max_context_func_num': 10,
+                'data_flow_analysis': True,
+                'measure_info_score': True,
+                'need_confirm': True,
+                'debug_mode': False,
+                'feedback': False
+            }
 
     def load_settings(self):
         """Load settings from file or return defaults."""

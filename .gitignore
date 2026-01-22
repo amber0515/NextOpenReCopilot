@@ -31,3 +31,5 @@ eggs/
 
 # Settings (user specific)
 settings.json
+
+src/config.json

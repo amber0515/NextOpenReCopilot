@@ -93,11 +93,11 @@ class OpenAIModel:
             client_args = {'api_key': api_key}
             if base_url:
                 # 确保 base_url 格式正确
-                if not base_url.endswith('/v1') and not base_url.endswith('/v1/'):
-                    if not base_url.endswith('/'):
-                        base_url += '/v1'
-                    else:
-                        base_url += 'v1'
+                # if not base_url.endswith('/v1') and not base_url.endswith('/v1/'):
+                #     if not base_url.endswith('/'):
+                #         base_url += '/v1'
+                #     else:
+                #         base_url += 'v1'
                 client_args['base_url'] = base_url
 
             # 使用异步客户端
