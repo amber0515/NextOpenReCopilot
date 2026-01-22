@@ -40,9 +40,9 @@ class ReCopilotSettingsManager:
         # - DeepSeek: base_url=https://api.deepseek.com, model_name=deepseek-chat
         # - 本地Ollama: base_url=http://localhost:11434, model_name=llama3
         return {
-            'model_name': 'gpt-4o',  # 默认使用OpenAI GPT-4o
-            'base_url': '',  # 留空使用OpenAI官方API
-            'api_key': '',  # 需要用户填写
+            'model_name': 'GLM-4.7',  # 默认使用OpenAI GPT-4o
+            'base_url': 'https://open.bigmodel.cn/api/paas/v4',  # 留空使用OpenAI官方API
+            'api_key': '496120a33182490c8158e3a95edfc889.siiIvQQMsI5NnSji',  # 需要用户填写
             'prompt_template': 'general', # 默认使用通用提示模板
             'max_output_tokens': 8000,
             'max_trace_caller_depth': 1,
